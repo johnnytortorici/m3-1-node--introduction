@@ -53,6 +53,37 @@ express()
     console.log(req.query);
   })
 
+  .get('/bot-message', (req, res) => {
+    // Grab user input from query
+    const userInput = req.query;
+    // Define commonGreetings array
+    const commonGreetings = ['hi', 'hello', 'howdy'];
+    // Define commonGreetings array
+    const commonGoodbyes = ['goodbye', 'bye', 'ciao'];
+    // By default, robot replies back with user's input
+    let botResponse = `Bzzt ${userInput.text}`;
+
+    // Define getBotMessage function
+    const getBotMessage = (arr, res) => {
+      // Loop through array and search string for possible match
+      for (let i = 0; i < arr.length; i++) {
+        if (userInput.text.toLowerCase().search(arr[i]) !== -1) {
+          botResponse = `Bzzt ${res}`;
+        }
+      }
+    }
+    
+    // Call getBotMessage function and pass the array to be searched
+    getBotMessage(commonGreetings, 'Hello');
+    getBotMessage(commonGoodbyes, 'Farewell');
+
+    const message = { author: 'bot', text: botResponse };
+    const randomTime = Math.floor(Math.random() * 3000);
+    setTimeout( () => {
+      res.status(200).json({ status: 200, message });
+    }, randomTime);
+  })
+
   // add new endpoints here ☝️
   // ---------------------------------
   // Nothing to modify below this line
